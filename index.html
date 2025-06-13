@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Code Playground</title>
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <img src="logo.svg" alt="Logo" class="loading-logo">
+            <div class="loading-text">Advanced Code Playground</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-status">Initializing...</div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="app hidden">
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <div class="title-bar-left">
+                <img src="logo.png" alt="Logo" class="title-logo">
+                <span class="title-text">Advanced Code Playground</span>
+                <div class="window-controls">
+                    <button class="window-btn minimize">−</button>
+                    <button class="window-btn maximize">□</button>
+                    <button class="window-btn close">×</button>
+                </div>
+            </div>
+            <div class="title-bar-center">
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item active">Untitled Project</span>
+                </div>
+            </div>
+            <div class="title-bar-right">
+                <div class="status-indicators">
+                    <div class="status-item" id="git-status">
+                        <i class="icon-git"></i>
+                        <span>main</span>
+                    </div>
+                    <div class="status-item" id="sync-status">
+                        <i class="icon-sync"></i>
+                        <span>Synced</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Bar -->
+        <div class="menu-bar">
+            <div class="menu-item" data-menu="file">File</div>
+            <div class="menu-item" data-menu="edit">Edit</div>
+            <div class="menu-item" data-menu="view">View</div>
+            <div class="menu-item" data-menu="run">Run</div>
+            <div class="menu-item" data-menu="tools">Tools</div>
+            <div class="menu-item" data-menu="help">Help</div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="new-file" title="New File (Ctrl+N)">
+                    <i class="icon-file-plus"></i>
+                </button>
+                <button class="toolbar-btn" id="save-file" title="Save (Ctrl+S)">
+                    <i class="icon-save"></i>
+                </button>
+                <button class="toolbar-btn" id="save-all" title="Save All (Ctrl+Shift+S)">
+                    <i class="icon-save-all"></i>
+                </button>
+            </div>
+            <div class="toolbar-separator"></div>
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="undo" title="Undo (Ctrl+Z)">
+                    <i class="icon-undo"></i>
+                </button>
+                <button class="toolbar-btn" id="redo" title="Redo (Ctrl+Y)">
+                    <i class="icon-redo"></i>
+                </button>
+            </div>
+            <div class="toolbar-separator"></div>
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="find" title="Find (Ctrl+F)">
+                    <i class="icon-search"></i>
+                </button>
+                <button class="toolbar-btn" id="replace" title="Replace (Ctrl+H)">
+                    <i class="icon-replace"></i>
+                </button>
+            </div>
+            <div class="toolbar-separator"></div>
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="format-code" title="Format Code (Shift+Alt+F)">
+                    <i class="icon-format"></i>
+                </button>
+                <button class="toolbar-btn" id="toggle-comment" title="Toggle Comment (Ctrl+/)">
+                    <i class="icon-comment"></i>
+                </button>
+            </div>
+            <div class="toolbar-separator"></div>
+            <div class="toolbar-group">
+                <button class="toolbar-btn primary" id="run-code" title="Run Code (F5)">
+                    <i class="icon-play"></i>
+                    <span>Run</span>
+                </button>
+                <button class="toolbar-btn" id="debug-code" title="Debug (F9)">
+                    <i class="icon-debug"></i>
+                </button>
+            </div>
+            <div class="toolbar-spacer"></div>
+            <div class="toolbar-group">
+                <select class="toolbar-select" id="theme-selector">
+                    <option value="dark">Dark Theme</option>
+                    <option value="light">Light Theme</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <option value="monokai">Monokai</option>
+                    <option value="solarized">Solarized</option>
+                </select>
+                <button class="toolbar-btn" id="settings" title="Settings">
+                    <i class="icon-settings"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-tabs">
+                    <button class="sidebar-tab active" data-panel="explorer">
+                        <i class="icon-folder"></i>
+                        <span>Explorer</span>
+                    </button>
+                    <button class="sidebar-tab" data-panel="search">
+                        <i class="icon-search"></i>
+                        <span>Search</span>
+                    </button>
+                    <button class="sidebar-tab" data-panel="git">
+                        <i class="icon-git"></i>
+                        <span>Git</span>
+                    </button>
+                    <button class="sidebar-tab" data-panel="extensions">
+                        <i class="icon-extensions"></i>
+                        <span>Extensions</span>
+                    </button>
+                </div>
+
+                <!-- Explorer Panel -->
+                <div class="sidebar-panel active" id="explorer-panel">
+                    <div class="panel-header">
+                        <h3>Explorer</h3>
+                        <div class="panel-actions">
+                            <button class="panel-btn" id="new-folder" title="New Folder">
+                                <i class="icon-folder-plus"></i>
+                            </button>
+                            <button class="panel-btn" id="new-file-explorer" title="New File">
+                                <i class="icon-file-plus"></i>
+                            </button>
+                            <button class="panel-btn" id="refresh-explorer" title="Refresh">
+                                <i class="icon-refresh"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="file-tree" id="file-tree">
+                        <!-- File tree will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Search Panel -->
+                <div class="sidebar-panel" id="search-panel">
+                    <div class="panel-header">
+                        <h3>Search</h3>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search files..." id="global-search">
+                        <input type="text" class="search-input" placeholder="Replace..." id="global-replace">
+                        <div class="search-options">
+                            <label><input type="checkbox" id="match-case"> Match Case</label>
+                            <label><input type="checkbox" id="whole-word"> Whole Word</label>
+                            <label><input type="checkbox" id="regex"> Regex</label>
+                        </div>
+                        <div class="search-results" id="search-results">
+                            <!-- Search results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Git Panel -->
+                <div class="sidebar-panel" id="git-panel">
+                    <div class="panel-header">
+                        <h3>Source Control</h3>
+                    </div>
+                    <div class="git-container">
+                        <div class="git-section">
+                            <h4>Changes</h4>
+                            <div class="git-changes" id="git-changes">
+                                <!-- Git changes will be shown here -->
+                            </div>
+                        </div>
+                        <div class="git-section">
+                            <h4>Commit</h4>
+                            <textarea class="commit-message" placeholder="Commit message..."></textarea>
+                            <button class="btn primary">Commit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extensions Panel -->
+                <div class="sidebar-panel" id="extensions-panel">
+                    <div class="panel-header">
+                        <h3>Extensions</h3>
+                    </div>
+                    <div class="extensions-container">
+                        <div class="extension-item">
+                            <div class="extension-info">
+                                <h4>Live Server</h4>
+                                <p>Launch a development local Server</p>
+                            </div>
+                            <button class="btn small">Install</button>
+                        </div>
+                        <div class="extension-item">
+                            <div class="extension-info">
+                                <h4>Prettier</h4>
+                                <p>Code formatter</p>
+                            </div>
+                            <button class="btn small primary">Installed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resizer -->
+            <div class="resizer vertical" id="sidebar-resizer"></div>
+
+            <!-- Editor Area -->
+            <div class="editor-area">
+                <!-- Tab Bar -->
+                <div class="tab-bar" id="tab-bar">
+                    <!-- Tabs will be dynamically added here -->
+                </div>
+
+                <!-- Editor Container -->
+                <div class="editor-container" id="editor-container">
+                    <!-- Editors will be dynamically added here -->
+                </div>
+
+                <!-- Find and Replace Widget -->
+                <div class="find-widget hidden" id="find-widget">
+                    <div class="find-row">
+                        <input type="text" class="find-input" placeholder="Find" id="find-input">
+                        <div class="find-actions">
+                            <button class="find-btn" id="find-prev" title="Previous Match">↑</button>
+                            <button class="find-btn" id="find-next" title="Next Match">↓</button>
+                            <button class="find-btn" id="find-close" title="Close">×</button>
+                        </div>
+                    </div>
+                    <div class="find-row">
+                        <input type="text" class="find-input" placeholder="Replace" id="replace-input">
+                        <div class="find-actions">
+                            <button class="find-btn" id="replace-one" title="Replace">Replace</button>
+                            <button class="find-btn" id="replace-all" title="Replace All">All</button>
+                        </div>
+                    </div>
+                    <div class="find-options">
+                        <label><input type="checkbox" id="find-match-case"> Aa</label>
+                        <label><input type="checkbox" id="find-whole-word"> Ab</label>
+                        <label><input type="checkbox" id="find-regex"> .*</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resizer -->
+            <div class="resizer vertical" id="editor-resizer"></div>
+
+            <!-- Preview Area -->
+            <div class="preview-area">
+                <!-- Preview Toolbar -->
+                <div class="preview-toolbar">
+                    <div class="preview-tabs">
+                        <button class="preview-tab active" data-preview="browser">
+                            <i class="icon-browser"></i>
+                            <span>Browser</span>
+                        </button>
+                        <button class="preview-tab" data-preview="console">
+                            <i class="icon-terminal"></i>
+                            <span>Console</span>
+                        </button>
+                        <button class="preview-tab" data-preview="network">
+                            <i class="icon-network"></i>
+                            <span>Network</span>
+                        </button>
+                        <button class="preview-tab" data-preview="performance">
+                            <i class="icon-performance"></i>
+                            <span>Performance</span>
+                        </button>
+                    </div>
+                    <div class="preview-controls">
+                        <select class="device-selector" id="device-selector">
+                            <option value="desktop">Desktop</option>
+                            <option value="tablet">Tablet</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <button class="preview-btn" id="refresh-preview" title="Refresh">
+                            <i class="icon-refresh"></i>
+                        </button>
+                        <button class="preview-btn" id="fullscreen-preview" title="Fullscreen">
+                            <i class="icon-fullscreen"></i>
+                        </button>
+                        <button class="preview-btn" id="external-preview" title="Open in New Window">
+                            <i class="icon-external"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Content -->
+                <div class="preview-content">
+                    <!-- Browser Preview -->
+                    <div class="preview-panel active" id="browser-preview">
+                        <div class="browser-frame" id="browser-frame">
+                            <div class="browser-header">
+                                <div class="browser-controls">
+                                    <div class="browser-dot red"></div>
+                                    <div class="browser-dot yellow"></div>
+                                    <div class="browser-dot green"></div>
+                                </div>
+                                <div class="browser-url">
+                                    <input type="text" value="localhost:3000" readonly>
+                                </div>
+                            </div>
+                            <iframe class="preview-iframe" id="preview-iframe" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Console Preview -->
+                    <div class="preview-panel" id="console-preview">
+                        <div class="console-header">
+                            <button class="console-btn" id="clear-console">Clear</button>
+                            <div class="console-filter">
+                                <label><input type="checkbox" checked> Logs</label>
+                                <label><input type="checkbox" checked> Warnings</label>
+                                <label><input type="checkbox" checked> Errors</label>
+                            </div>
+                        </div>
+                        <div class="console-content" id="console-content">
+                            <!-- Console output will be shown here -->
+                        </div>
+                        <div class="console-input-container">
+                            <input type="text" class="console-input" placeholder="Enter JavaScript..." id="console-input">
+                        </div>
+                    </div>
+
+                    <!-- Network Preview -->
+                    <div class="preview-panel" id="network-preview">
+                        <div class="network-header">
+                            <button class="network-btn" id="clear-network">Clear</button>
+                            <div class="network-filter">
+                                <button class="filter-btn active">All</button>
+                                <button class="filter-btn">XHR</button>
+                                <button class="filter-btn">JS</button>
+                                <button class="filter-btn">CSS</button>
+                                <button class="filter-btn">Img</button>
+                            </div>
+                        </div>
+                        <div class="network-content" id="network-content">
+                            <div class="network-table">
+                                <div class="network-header-row">
+                                    <div class="network-col">Name</div>
+                                    <div class="network-col">Status</div>
+                                    <div class="network-col">Type</div>
+                                    <div class="network-col">Size</div>
+                                    <div class="network-col">Time</div>
+                                </div>
+                                <!-- Network requests will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Preview -->
+                    <div class="preview-panel" id="performance-preview">
+                        <div class="performance-metrics">
+                            <div class="metric-card">
+                                <h4>Load Time</h4>
+                                <div class="metric-value" id="load-time">0ms</div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>DOM Nodes</h4>
+                                <div class="metric-value" id="dom-nodes">0</div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Memory Usage</h4>
+                                <div class="metric-value" id="memory-usage">0MB</div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Bundle Size</h4>
+                                <div class="metric-value" id="bundle-size">0KB</div>
+                            </div>
+                        </div>
+                        <div class="performance-chart" id="performance-chart">
+                            <!-- Performance chart will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel -->
+        <div class="bottom-panel" id="bottom-panel">
+            <div class="bottom-tabs">
+                <button class="bottom-tab active" data-bottom="problems">
+                    <i class="icon-warning"></i>
+                    <span>Problems</span>
+                    <span class="badge" id="problems-count">0</span>
+                </button>
+                <button class="bottom-tab" data-bottom="output">
+                    <i class="icon-output"></i>
+                    <span>Output</span>
+                </button>
+                <button class="bottom-tab" data-bottom="terminal">
+                    <i class="icon-terminal"></i>
+                    <span>Terminal</span>
+                </button>
+                <button class="bottom-tab" data-bottom="debug">
+                    <i class="icon-debug"></i>
+                    <span>Debug Console</span>
+                </button>
+            </div>
+            <div class="bottom-content">
+                <!-- Problems Panel -->
+                <div class="bottom-panel-content active" id="problems-content">
+                    <div class="problems-list" id="problems-list">
+                        <!-- Problems will be shown here -->
+                    </div>
+                </div>
+
+                <!-- Output Panel -->
+                <div class="bottom-panel-content" id="output-content">
+                    <div class="output-content" id="build-output">
+                        <!-- Build output will be shown here -->
+                    </div>
+                </div>
+
+                <!-- Terminal Panel -->
+                <div class="bottom-panel-content" id="terminal-content">
+                    <div class="terminal" id="terminal">
+                        <div class="terminal-output" id="terminal-output">
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">$</span>
+                                <span class="terminal-text">Welcome to Advanced Code Playground Terminal</span>
+                            </div>
+                        </div>
+                        <div class="terminal-input-line">
+                            <span class="terminal-prompt">$</span>
+                            <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debug Console Panel -->
+                <div class="bottom-panel-content" id="debug-content">
+                    <div class="debug-console" id="debug-console">
+                        <!-- Debug information will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-left">
+                <div class="status-item" id="cursor-position">Ln 1, Col 1</div>
+                <div class="status-item" id="selection-info">UTF-8</div>
+                <div class="status-item" id="file-type">HTML</div>
+            </div>
+            <div class="status-center">
+                <div class="status-item" id="git-branch">
+                    <i class="icon-git"></i>
+                    <span>main</span>
+                </div>
+            </div>
+            <div class="status-right">
+                <div class="status-item" id="errors-warnings">
+                    <i class="icon-error"></i>
+                    <span>0</span>
+                    <i class="icon-warning"></i>
+                    <span>0</span>
+                </div>
+                <div class="status-item" id="live-share">
+                    <i class="icon-live-share"></i>
+                    <span>Live Share</span>
+                </div>
+                <div class="status-item" id="notifications">
+                    <i class="icon-bell"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Command Palette -->
+        <div class="command-palette hidden" id="command-palette">
+            <div class="command-palette-content">
+                <input type="text" class="command-input" placeholder="Type a command..." id="command-input">
+                <div class="command-list" id="command-list">
+                    <!-- Commands will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Context Menus -->
+        <div class="context-menu hidden" id="context-menu">
+            <!-- Context menu items will be populated here -->
+        </div>
+
+        <!-- Modals -->
+        <div class="modal-overlay hidden" id="modal-overlay">
+            <div class="modal" id="settings-modal">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="modal-close" id="close-settings">×</button>
+                </div>
+                <div class="modal-content">
+                    <div class="settings-tabs">
+                        <button class="settings-tab active" data-settings="editor">Editor</button>
+                        <button class="settings-tab" data-settings="appearance">Appearance</button>
+                        <button class="settings-tab" data-settings="keybindings">Keybindings</button>
+                        <button class="settings-tab" data-settings="extensions">Extensions</button>
+                    </div>
+                    <div class="settings-content">
+                        <!-- Settings content will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="notifications-container" id="notifications-container">
+            <!-- Notifications will be shown here -->
+        </div>
+
+        <!-- Minimap -->
+        <div class="minimap" id="minimap">
+            <canvas class="minimap-canvas" id="minimap-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
