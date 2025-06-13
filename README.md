@@ -1,7 +1,4 @@
 # 🚀 Advanced Code Playground
-
-<div align="center">
-  <img src="logo.svg" alt="Advanced Code Playground Logo" width="120" height="120">
   
   **The most advanced browser-based IDE for web development**
 
