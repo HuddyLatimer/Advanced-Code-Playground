@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <!-- Gradient definitions -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#667eea;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#feca57;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="codeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4fc1ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9cdcfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4fc1ff;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Drop shadow -->
+    <filter id="dropshadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    
+    <!-- Animation definitions -->
+    <animateTransform id="rotate" attributeName="transform" type="rotate" 
+                      values="0 50 50;360 50 50" dur="20s" repeatCount="indefinite"/>
+  </defs>
+  
+  <!-- Background circle with gradient -->
+  <circle cx="50" cy="50" r="48" fill="url(#primaryGradient)" filter="url(#dropshadow)">
+    <animateTransform attributeName="transform" type="rotate" 
+                      values="0 50 50;360 50 50" dur="30s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Inner circle for depth -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  
+  <!-- Code brackets - left -->
+  <path d="M 25 30 L 20 35 L 20 45 L 15 50 L 20 55 L 20 65 L 25 70" 
+        fill="none" stroke="url(#codeGradient)" stroke-width="3" 
+        stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <animate attributeName="stroke-width" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Code brackets - right -->
+  <path d="M 75 30 L 80 35 L 80 45 L 85 50 L 80 55 L 80 65 L 75 70" 
+        fill="none" stroke="url(#codeGradient)" stroke-width="3" 
+        stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <animate attributeName="stroke-width" values="3;4;3" dur="2s" repeatCount="indefinite" begin="1s"/>
+  </path>
+  
+  <!-- Central code symbol -->
+  <g transform="translate(50,50)">
+    <!-- Forward slash -->
+    <line x1="-8" y1="12" x2="8" y2="-12" stroke="url(#accentGradient)" 
+          stroke-width="3" stroke-linecap="round" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+    </line>
+    
+    <!-- Dots representing code -->
+    <circle cx="-12" cy="-8" r="2" fill="url(#accentGradient)">
+      <animate attributeName="r" values="2;3;2" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="12" cy="8" r="2" fill="url(#accentGradient)">
+      <animate attributeName="r" values="2;3;2" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    <circle cx="-15" cy="5" r="1.5" fill="url(#codeGradient)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="15" cy="-5" r="1.5" fill="url(#codeGradient)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+  </g>
+  
+  <!-- Orbiting elements -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" 
+                      values="0 50 50;360 50 50" dur="15s" repeatCount="indefinite"/>
+    
+    <!-- HTML tag -->
+    <g transform="translate(50,20)">
+      <rect x="-6" y="-3" width="12" height="6" rx="2" fill="url(#accentGradient)" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+      </rect>
+      <text x="0" y="1" text-anchor="middle" font-family="monospace" font-size="6" fill="white" font-weight="bold">&lt;/&gt;</text>
+    </g>
+    
+    <!-- CSS symbol -->
+    <g transform="translate(80,50)">
+      <circle r="5" fill="url(#codeGradient)" opacity="0.8">
+        <animate attributeName="r" values="5;6;5" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="0" y="2" text-anchor="middle" font-family="monospace" font-size="6" fill="white" font-weight="bold">{}</text>
+    </g>
+    
+    <!-- JS symbol -->
+    <g transform="translate(50,80)">
+      <polygon points="-5,-4 5,-4 4,4 -4,4" fill="url(#accentGradient)" opacity="0.8">
+        <animateTransform attributeName="transform" type="scale" 
+                          values="1;1.2;1" dur="2s" repeatCount="indefinite"/>
+      </polygon>
+      <text x="0" y="1" text-anchor="middle" font-family="monospace" font-size="6" fill="white" font-weight="bold">JS</text>
+    </g>
+    
+    <!-- Terminal symbol -->
+    <g transform="translate(20,50)">
+      <rect x="-5" y="-3" width="10" height="6" rx="1" fill="url(#codeGradient)" opacity="0.8"/>
+      <text x="0" y="1" text-anchor="middle" font-family="monospace" font-size="5" fill="white">$</text>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="1.8s" repeatCount="indefinite"/>
+    </g>
+  </g>
+  
+  <!-- Particle effects -->
+  <g opacity="0.6">
+    <circle cx="30" cy="25" r="1" fill="url(#accentGradient)">
+      <animate attributeName="cy" values="25;75;25" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="70" cy="75" r="1" fill="url(#codeGradient)">
+      <animate attributeName="cy" values="75;25;75" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="85" cy="30" r="0.8" fill="url(#accentGradient)">
+      <animate attributeName="cx" values="85;15;85" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Outer ring with pulse effect -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="url(#accentGradient)" 
+          stroke-width="1" opacity="0.3">
+    <animate attributeName="r" values="46;48;46" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Inner highlight -->
+  <circle cx="42" cy="42" r="3" fill="rgba(255,255,255,0.3)">
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="4s" repeatCount="indefinite"/>
+  </circle>
+</svg>
